@@ -1,0 +1,142 @@
+//
+    Created by chenpeng on 14-2-24.
+extends default
+block scripts
+    script(src="js/doctorManage.js")
+    link(rel="stylesheet", href="resources/css/uploadify.css", type="text/css", media="screen")
+    script(src="resources/scripts/jquery.uploadify.min.js")
+    script.
+        subjectList = '#{doctor.departments}'.split(',');
+        for( var i = 0; i < subjectList.length; i++){
+            if(subjectList[i] > 2){
+                subjects.push(subjectList[i]);
+            }
+        }
+    - for ( var i = 0; i < prices.length;i++)
+        - if( prices[i])
+            script priceData.push({id:#{prices[i].id},name:'￥#{prices[i].price}'});
+    - for ( var i = 0;departments && i < departments.length; i++)
+        - if( departments[i])
+            script subjectData.push({id:#{departments[i].id},name:'#{departments[i].name}',category:#{departments[i].category}});
+    - for ( var i = 0; i < jobTitles.length;i++)
+        - if( jobTitles[i])
+            script jobTitles.push({id:#{jobTitles[i].id},name:'#{jobTitles[i].name}'});
+    - for ( var i = 0;citys && i < citys.length;i++)
+        - if( citys[i])
+            script cityData.push({id:#{citys[i].id},name:'#{citys[i].name}'});
+    - for ( var i = 0; i < diseases.length;i++)
+        - if( diseases[i])
+            script diseaseData.push({id:#{diseases[i].id},name:'#{diseases[i].name}',department_id:#{diseases[i].department_id}});
+    - for ( var i = 0; i < hospitals.length;i++)
+        - if( hospitals[i])
+            script hospitalData.push({id:#{hospitals[i].code},name:'#{hospitals[i].name}',department_id:"#{hospitals[i].departments}",city:#{hospitals[i].city}});
+block title
+    h3 医生信息修改
+block content
+    form
+        fieldset
+            input(type="text",id="doctor_id",name="doctor_id",value="#{doctor.id}",style="display:none;")
+            p(class="align-right")
+                img(src="Image_doctor#{doctor.id}.jpg",width="auto",height="160px")
+                <br/>
+                input(type="file",accept="image/*", id="uploadFile",name="uploadFile")
+            p
+                label 姓名
+                input( class="text-input small-input", type="text", id="doctor_name",name="doctor_name",value="#{doctor.name}")
+            p
+                label 工作号码
+                input( class="text-input small-input", type="text",value="#{doctor.work_phone_number}", id="work_phone_number",name="work_phone_number")
+                <br/>
+                small 工作号码用于接受咨询
+            p
+                label 个人号码
+                input( class="text-input small-input", type="text",value="#{doctor.self_phone_number}", id="self_phone_number",name="self_phone_number")
+                <br/>
+                small 用于方便联系您
+            p
+                label 所在医院
+                select(name="sel_city",id="sel_city",class="normal-select",onchange="changeCity()")
+                    - for ( var i = 0; i < citys.length; i ++ )
+                        - if( citys[i] && citys[i].id == hospitals[doctor.hospital].city)
+                            option(value="#{citys[i].id}",selected="true") #{citys[i].name}
+                        - else if(citys[i])
+                            option(value="#{citys[i].id}") #{citys[i].name}
+                span &nbsp;&nbsp;
+                select(name="sel_hospital",id="sel_hospital",class="select")
+                    - for ( var i = 0; i < hospitals.length; i++)
+                        - if ( hospitals[i] && hospitals[i].id == doctor.hospital)
+                            option(value="#{hospitals[i].id}",selected="true") #{hospitals[i].name}
+                        - else if ( hospitals[i])
+                            option(value="#{hospitals[i].id}") #{hospitals[i].name}
+
+            p
+                span 职位&nbsp;&nbsp;
+                select(name="sel_job",id="sel_job",class="normal-select")
+                    - for ( var i = 0; i < jobTitles.length; i++)
+                        - if ( jobTitles[i] && jobTitles[i].id == doctor.job_title)
+                            option(value="#{jobTitles[i].id}",selected="true") #{jobTitles[i].name}
+                        - else if ( jobTitles[i])
+                            option(value="#{jobTitles[i].id}") #{jobTitles[i].name}
+                span &nbsp;&nbsp;&nbsp; 咨询价格&nbsp;&nbsp;
+                select(name="sel_price",id="sel_price",class="normal-select")
+                    - for ( var i = 0; i < prices.length; i++)
+                        - if ( prices[i] && prices[i].id == doctor.price)
+                            option(value="#{prices[i].id}",selected="true") #{prices[i].price}
+                        - else if ( jobTitles[i])
+                            option(value="#{prices[i].id}") #{prices[i].price}
+            p
+                label 请选择科室
+                .content-box.column-left
+                    .content-box-header
+                        h3 儿科
+                    .content-box-content
+                        .tab-content.default-tab
+                            - for ( var k = 0; k < departments.length; k++)
+                                - if ( departments[k] && departments[k].category == 0)
+                                    - if (departments[k].id !== 1)
+                                        - if(doctor.departments.indexOf('' + departments[k].id) == -1)
+                                            p(class="tab_p")
+                                                input(type="checkbox",name="subject",value="#{departments[k].id}",onclick="onDepartment(this)")
+                                                span #{departments[k].name}
+                                        - else
+                                            p(class="tab_p")
+                                                input(type="checkbox",name="subject",checked="checked",value="#{departments[k].id}",onclick="onDepartment(this)")
+                                                span #{departments[k].name}
+                .content-box.column-right
+                    .content-box-header
+                        h3 产科
+                    .content-box-content
+                        .tab-content.default-tab
+                            - for ( var k = 0; k < departments.length; k++)
+                                - if ( departments[k] && departments[k].category == 1)
+                                    - if (departments[k].id !== 2)
+                                        - if(doctor.departments.indexOf('' + departments[k].id) == -1)
+                                            p
+                                                input(type="checkbox",name="subject",value="#{departments[k].id}",onclick="onDepartment(this)")
+                                                span #{departments[k].name}
+                                        - else
+                                            p
+                                                input(type="checkbox",name="subject",checked="checked",value="#{departments[k].id}",onclick="onDepartment(this)")
+                                                span #{departments[k].name}
+                .clear
+            p
+                span 主治疾病&nbsp;&nbsp;
+                //#{diseases[doctor.diseases].department_id}，#{doctor.diseases}
+                select(name="sel_subject",id="sel_subject",class="select",onchange="changeSubject()")
+                    - for ( var k = 0; k < departments.length; k++)
+                        - if ( departments[k] && departments[k].id > 2 )
+                            - if(doctor.departments.indexOf('' + departments[k].id) != -1)
+                                - if(departments[k].id == diseases[doctor.diseases].department_id)
+                                    option(value="#{departments[k].id}",selected="true") #{departments[k].name}
+                                - else
+                                    option(value="#{departments[k].id}") #{departments[k].name}
+                select(name="sel_illness",id="sel_illness",class="select")
+                    - for ( var k = 0; k < diseases.length; k++)
+                        - if( diseases[k] && diseases[k].department_id == diseases[doctor.diseases].department_id)
+                            - if( diseases[k].id == doctor.diseases)
+                                option(value="#{diseases[k].id}",selected="true") #{diseases[k].name}
+                            - else
+                                option(value="#{diseases[k].id}") #{diseases[k].name}
+            p
+                input(type="button",class="button",onclick="alter()",value="提交")
+                input(type="button",class="button",onclick="resetDoctor( '#{doctor.name}', '#{doctor.work_phone_number}', '#{doctor.self_phone_number}', #{doctor.hospital}, #{doctor.job_title}, #{doctor.price}, '#{doctor.departments}', #{doctor.diseases})",value="重置")

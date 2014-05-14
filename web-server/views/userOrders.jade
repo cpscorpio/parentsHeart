@@ -1,0 +1,200 @@
+//
+    Created by chenpeng on 14-2-19.
+extends default
+block scripts
+    script(src="resources/scripts/ui.core.js")
+    script(src="resources/scripts/ui.datepicker-zh-CN.js")
+    script(src="resources/scripts/ui.datepicker.js")
+    script(src="js/serviceManage.js")
+    script.
+        $(function() {
+            $("#patient_birthday").datepicker({changeMonth: true,changeYear: true,altField: '#actualDate',altFormat: 'yyyy-mm-dd',appendText: '(yyyy-mm-dd)',showButtonPanel: true,showClearButton:true});
+            $("#need_time").datepicker({altField: '#actualDate',altFormat: 'yyyy-mm-dd',appendText: '(yyyy-mm-dd)',showButtonPanel: true,showClearButton:true,minDate: new Date()});
+        });
+    script user='#{user.uid}';client='#{client.phone_number}';
+    - for ( var i = 0; i < prices.length;i++)
+        - if( prices[i])
+            script priceData.push({ id:#{prices[i].id}, price:'#{prices[i].price}' });
+    - for ( var i = 0; i < subjects.length;i++)
+        - if( subjects[i])
+            script subjectData.push({ id:#{subjects[i].id}, name:'#{subjects[i].name}',  category:#{subjects[i].category} });
+    - for ( var i = 0; i < hospitals.length;i++)
+        - if( hospitals[i])
+            script hospitalData.push({ id:#{hospitals[i].id},  name:'#{hospitals[i].name}', city:#{hospitals[i].city}, departments:'#{hospitals[i].departments}' });
+    - for ( var i = 0; i < citys.length;i++)
+        - if( citys[i])
+            script cityData.push({ id:#{citys[i].id}, name:'#{citys[i].name}' });
+    - for ( var i = 0; i < diseases.length;i++)
+        - if( diseases[i])
+            script diseaseData.push({ id:#{diseases[i].id}, name:'#{diseases[i].name}', department_id:#{diseases[i].department_id} });
+    - for ( var i = 0;orders && orders.length && i < orders.length;i++)
+        - if( orders[i])
+            script orderData.push({ id:#{orders[i].id}, order_id:"#{orders[i].order_id}", doctor_id:#{orders[i].doctor_id}, doctor_name:"#{orders[i].doctor_name}", user_contact:"#{orders[i].user_contact}", status:#{orders[i].status}, ctime:"#{orders[i].ctime}" });
+block content-head
+    .content-box.column-left
+        .content-box-header
+            h3 用户：#{client.name}
+        .content-box-content
+            .tab-content.default-tab
+                a(href="#fishedBox",rel="modal",class="align-right button") 结束服务
+                h4 电话号码：#{client.phone_number}
+                h4 余额：#{client.money}￥
+
+    ul(class="shortcut-buttons-set align-right")
+        li
+            a(class="shortcut-button",href="#",onclick="show('findDoctor')")
+                span
+                    img(src="resources/images/icons/pencil_48.png",alt="icon")
+                    <br/> 创建找医生订单
+        li
+            a(class="shortcut-button",href="#",onclick="show('guahao')")
+                span
+                    img(src="resources/images/icons/paper_content_pencil_48.png",alt="icon")
+                    <br/> 创建找劳务订单
+    .clear
+    #doctorBox(style="display: none")
+        form
+            fieldset
+                p doctor
+    #fishedBox(style="display: none")
+        form
+            fieldset
+                p
+                    label 请选择服务内容
+                p(class="tab_p")
+                    input(type="radio",id="radiotype",name="radiotype",checked="checked",value="1")
+                    span 找医生
+                p(class="tab_p")
+                    input(type="radio",id="radiotype",name="radiotype",value="2")
+                    span 找劳务
+                p(class="tab_p")
+                    input(type="radio",id="radiotype",name="radiotype",value="3")
+                    span 处理订单
+                p(class="tab_p")
+                    input(type="radio",id="radiotype",name="radiotype",value="0")
+                    span 其他
+                .clear
+                p(class="align-right")
+                    input(type="button",class="button",value="完成",onclick="closeService(true)")
+                    span &nbsp;
+                    input(type="button",class="button",value="直接退出",onclick="closeService(false)")
+    #findDoctor.content-box(style="display: none")
+        a(href="#",class="close align-right",style="padding: 5px 5px 5px 5px;")
+            img(src="resources/images/close.png",alt="close",title="close this")
+        .content-box-header
+            h3 创建找医生订单
+        .content-box-content
+            form
+                fieldset
+                    p
+                        label 联系号码
+                        input( class="text-input small-input", type="text",value="#{client.phone_number}", id="contact_Doctor",name="contact_Doctor")
+                    p
+                        label 选择科室
+                        select(name='sel_category',id="sel_category",onchange="changeCategory()")
+                        select(name='sel_subject',id="sel_subject",onchange="changeSubject()")
+                    p
+                        label 选择疾病
+                        select(name='sel_illness',id="sel_illness")
+                    p
+                        label 选择咨询价格
+                        select(name='sel_price',id="sel_price")
+                    p
+                        label 病情描述
+                        textarea( class="text-input",cols="40",rows="4", id="illness_desc",name="illness_desc")
+
+                    p
+                        input( type="button", class='button', value='提交',onclick='orderFindDoctor()')
+                        #notifyDoctor.notification.success.png_bg(style="display: none")
+                            a(href="#",class="close")
+                                img(src="resources/images/icons/cross_grey_small.png",alt="close",title="close this")
+                            div
+                                label(id="notifyMessageDoctor") 1
+
+    .clear
+    #guahao.content-box(style="display: none")
+        a(href="#",class="close align-right",style="padding: 5px 5px 5px 5px;")
+            img(src="resources/images/close.png",alt="close",title="close this")
+        .content-box-header
+            h3 创建找劳务订单
+        .content-box-content
+            form
+                fieldset
+                    p
+                        .content-box.column-right
+                            .content-box-header
+                                h3 患者信息
+                            .content-box-content
+                                .tab-content.default-tab
+                                    p
+                                        label 患者姓名
+                                        input( class="text-input small-input", type="text", id="patient_name",name="patient_name")
+                                        small &nbsp;&nbsp;性别：
+                                            input(type="radio",name="patient_sex",id="patient_sex",value="0",checked="checked")
+                                            span 男，
+                                            input(type="radio",name="patient_sex",id="patient_sex",value="1")
+                                            span 女
+                                    p
+                                        label 生日
+                                        input( class="text-input medium-input", type="text", id="patient_birthday",name="patient_birthday")
+                                    p
+                                        label 身份证号
+                                        input( class="text-input medium-input", type="text", id="patient_idCard",name="patient_idCard")
+                                    p
+                                        label 联系方式
+                                        input( class="text-input medium-input", type="text", id="patient_contact",name="patient_contact")
+                                    p
+                                        input(type="checkbox", id="need_medical_record",name="need_medical_record")
+                                        span 需要病历本,&nbsp
+                                        input(type="checkbox", id="have_health_insurance",name="have_health_insurance")
+                                        span 有医保卡
+                    p
+                        label 选择医院
+                        select(name='sel_city',id="sel_city",onchange="changeCity()")
+                        select(name='sel_hospital',id="sel_hospital",onchange="changeHospital()")
+                    p
+                        label 选择科室\
+                        select(name='sel_subject1',id="sel_subject1")
+                    p
+                        label 选择挂号类型
+                        select(name='sel_type',id="sel_type")
+                    p
+                        label 需号时间
+                        input( class="text-input small-input", type="text", id="need_time",name="need_time")
+                    p
+                        input( type="button", class='button', value='提交',onclick="ServiceOrderRegistration()")
+                        #notifyGuaHao.notification.success.png_bg(style="display: none")
+                            a(href="#",class="close")
+                                img(src="resources/images/icons/cross_grey_small.png",alt="close",title="close this")
+                            div
+                                label(id="notifyMessageGuaHao") 1
+    .clear
+block title
+    h3 订单管理
+block thead
+    tr
+        th(colspan="10")
+            .pagination.align-right
+                a(id="orderFindDoctor",href="#",class='number current',onclick="onOrder(0)") 找医生订单
+                a(id="orderGuahao",href="#",class='number',onclick="onOrder(1)") 找劳务订单
+                a(id="orderService",href="#",class='number',onclick="onOrder(2)") 客服订单
+    //-tr
+        th(colspan="10")
+            .bulk-actions.align-left
+                b 城市：
+                select(name="search_city",class="simple-select",id="search_city",onchange="changeCity()")
+                b &nbsp;&nbsp;&nbsp;&nbsp;医院：
+                select(name="search_hospital",class="normal-select",id="search_hospital",onchange="changeHospital()")
+                b &nbsp;&nbsp;&nbsp;&nbsp;
+                input(class="text-input small-input", type="text",name="search",id="search")
+                a(id="searchBtn",href="#",title="查找",class="button") 查找
+    tr
+        th 编号
+        th 用户号码
+        th 受理人
+        th 时间
+        th 状态
+        th 其他
+block deleteAll
+block tbody
+    tbody(id="orderList")

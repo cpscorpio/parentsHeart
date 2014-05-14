@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>
+        test1
+    </title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="content-style-type" content="text/css" />
+    <meta http-equiv="content-scripte-type" content="text/javascript" />
+    <meta name="author" content="netease" />
+    <meta name="version" content="1.0" />
+    <meta name="keywords" content="pomelo" />
+    <!-- Reset Stylesheet -->
+    <link rel="stylesheet" href="resources/css/reset.css" type="text/css" media="screen" />
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="resources/css/style.css" type="text/css" media="screen" />
+
+    <!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+    <link rel="stylesheet" href="resources/css/invalid.css" type="text/css" media="screen" />
+    <script src="resources/scripts/lib/build/build.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        require('boot');
+    </script>
+    <script type="text/javascript">
+        var pomelo = window.pomelo;
+        var host = "42.121.106.17";
+        var port = "3010";
+
+        function log(data){
+            var oTest = document.getElementById("info");
+            var newNode = document.createElement("p");
+            newNode.innerHTML = data;
+            oTest.appendChild(newNode);
+        }
+        function login() {
+
+            pomelo.init({
+                host: host,
+                port: port,
+                log: true
+            }, function() {
+                var args = {
+                    uid:"7987ABCDAB789798",
+                    device_token:'7987ABCDAB789798',
+                    user_type:'user',
+                    version:"1.0.0",
+                    client_type:"web"
+                }
+                pomelo.request("connector.entryHandler.entry", args, function(data) {
+
+                    log(JSON.stringify(data));
+                    log('login ok!');
+                });
+            });
+        }
+        function send(){
+
+            var req = {
+                msgtype : "SSS"
+            }
+
+            pomelo.request("chat.chatHandler.DoctorList", req, function(data) {
+                //alert(data.msg);
+
+                log(JSON.stringify(data));
+            });
+        }
+        pomelo.on( 'onOtherLogin',function ( data) {
+            log(JSON.stringify(data));
+        });
+
+        function user(){
+            pomelo.init({
+                host: host,
+                port: port,
+                log: true
+            }, function() {
+                var args = {
+                    uid:"7987ABCDAB789798",
+                    device_token:'7987ABCDAB789798',
+                    user_type:'user',
+                    version:"1.0.0"
+                }
+                pomelo.request("connector.entryHandler.testUser", args, function(data) {
+
+                    log(JSON.stringify(data));
+                    log('login ok!');
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+    <input type="button" value="login" onclick="login();" />
+    <input type="button" value="send" onclick="send();" />
+    <input type="button" value="user" onclick="user();" />
+    <br />
+    <div id='info'>
+        info:
+    </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+//
+   Created by chenpeng on 14-2-26.
+extends default
+block scripts
+    script(src="js/priceManage.js")
+    - for ( var i = 0; i < prices.length;i++)
+        - if( prices[i])
+            script priceData.push({id:#{prices[i].id},price:'#{prices[i].price}'});
+block title
+    h3 咨询价位管理
+block thead
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 价格(￥)
+        th 其他
+block tfoot-th
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 价格(￥)
+        th 其他
+block tfoot
+    tr
+        th 添加
+            th Auto
+        th
+            input(class="text-input small-input", type="text",name="price",id="price")
+        th
+            a(href="#",id="btnAdd",class="button") 添加
+block tbody
+    tbody(id="priceList")

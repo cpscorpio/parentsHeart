@@ -1,0 +1,53 @@
+{
+    "connector.entryHandler.entry":{
+        "required string uid": 1,
+        "required bool login": 2,
+        "required string version": 3,
+        "message Init_Info": {
+            "required uInt32 result": 1,
+            "message Price": {
+                "required uInt32 id": 1,
+                "required double price": 2
+            },
+            "repeated Price prices":2,
+            "message Subject": {
+                "required uInt32 id": 1,
+                "required string subject": 2,
+                "repeated uInt illnesses": 3,
+                "required uInt32 category": 4
+            },
+            "repeated Subject subjects":3,
+            "message Illness":{
+                "required uInt32 id": 1,
+                "required string illness": 2
+            },
+            "repeated Illness illnesses":4,
+            "message Hospital":{
+                "required uInt32 id": 1,
+                "required string hospital": 2,
+                "repeated uInt32 subjects": 3
+            },
+            "repeated Hospital hospitals":5
+        },
+        "repeated Init_Info init_Info":4
+    },
+    "chat.chatHandler.Balance":{
+        "required double balance": 1
+    },
+    "chat.chatHandler.DoctorList":{
+        "required uInt result": 1,
+        "message Doctor": {
+            "required uInt32 id": 1,
+            "required string hospital": 2,
+            "repeated string title": 3,
+            "required string subject": 4,
+            "required string name": 5,
+            "required double price": 6,
+            "required string image": 7
+        },
+        "repeated Doctor doctors":2
+    },
+    "chat.chatHandler.Order":{
+        "required uInt result": 1
+    }
+}

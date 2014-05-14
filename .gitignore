@@ -1,0 +1,10 @@
+images
+recordfiles
+web-server/logs
+web-server/node_modules
+web-server/upload
+game-server/logs
+game-server/node_modules
+.idea/
+.DS_Store
+*/.DS_Store

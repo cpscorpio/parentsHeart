@@ -1,0 +1,34 @@
+//
+   Created by chenpeng on 14-2-26.
+extends default
+block scripts
+    script(src="js/jobTitleManage.js")
+    - for ( var i = 0; i < jobTitles.length;i++)
+        - if( jobTitles[i])
+            script jobTitles.push({id:#{jobTitles[i].id},name:'#{jobTitles[i].name}'});
+block title
+    h3 医生职称管理
+block thead
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 名称
+        th 其他
+block tfoot-th
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 名称
+        th 其他
+block tfoot
+    tr
+        th 添加
+            th Auto
+        th
+            input(class="text-input small-input", type="text",name="jobTitleName",id="jobTitleName")
+        th
+            a(href="#",id="btnAdd",class="button") 添加
+block tbody
+    tbody(id="jobTitleList")

@@ -1,0 +1,17 @@
+{
+  "name": "parentsheart",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "pomelo": "0.8.7",
+    "mysql": ">=2.0",
+    "crc": ">=0.0.1",
+    "pomelo-logger": ">=0.1.2",
+    "async": ">=0.2.9",
+    "generic-pool": ">=2.0.0",
+    "pomelo-schedule": ">=0.3.7",
+    "rsautl": "~0.1.0",
+    "concat-stream": "~1.4.1",
+    "nodemailer": "*"
+  }
+}

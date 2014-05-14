@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      Pomelo
+    </title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="content-style-type" content="text/css" />
+    <meta http-equiv="content-scripte-type" content="text/javascript" />
+    <meta name="author" content="netease" />
+    <meta name="version" content="1.0" />
+    <meta name="keywords" content="pomelo" />
+    <link type="text/css" rel="stylesheet" href="css/base.css" />
+    <script src="js/lib/socket.io.js">
+    </script>
+    <script src="js/lib/pomeloclient.js">
+    </script>
+    <script type="text/javascript">
+      var pomelo = window.pomelo;
+      var host = "42.121.106.17";
+      var port = "3010";
+
+      function log(data){
+          var oTest = document.getElementById("info");
+          var newNode = document.createElement("p");
+          newNode.innerHTML = data;
+          oTest.appendChild(newNode);
+      }
+
+      function show() {
+        pomelo.init({
+          host: host,
+          port: port,
+          log: true
+        }, function() {
+            var args = {
+                uid:"7987ABCDAB789798",
+                device_token:'7987ABCDAB789798',
+                user_type:'user',
+                version:"1.0.0",
+                client_type:"web"
+            }
+            pomelo.request("connector.entryHandler.entry", args, function(data) {
+
+                log(JSON.stringify(data));
+                log('login ok!');
+            });
+        });
+      }
+    </script>
+ 
+  </head>
+  <body>
+    <div class="g-doc">
+      <div class="g-banner" style="border:none">
+        <div class="logo">
+          <div class="img"></div>
+        </div>
+      </div>
+      <div class="g-background">
+        <div class="g-content">
+          Welcome to Pomelo
+        </div>
+      </div>
+      <div class="g-link">
+        Home:
+        <a href="https://github.com/NetEase/pomelo">https://github.com/NetEase/pomelo</a>
+      </div>
+      <div class="g-button">
+        <input id="test" type="button" value="Test Game Server" onclick="show()"/>
+      </div>
+        <div id='info'>
+            info:
+        </div>
+    </div>
+  </body>
+</html>

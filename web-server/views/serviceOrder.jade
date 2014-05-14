@@ -1,0 +1,32 @@
+//
+   Created by chenpeng on 14-3-17.
+extends default
+block title
+    h3 客服订单信息
+block content
+    - statusName = ['未评价','完成(已评价)','状态异常'];
+    - typeName = ['普通号','专家号','特序号']
+    - commentName = ['未评价','差评','中评','差评'];
+    form
+        fieldset
+            table(style="width:80%;margin:auto")
+                tr
+                    td 订单ID
+                    td #{order.order_id}
+                    td 创建时间
+                    td #{order.ctime}
+                tr
+                    td 用户号码
+                    td(colspan="3") #{order.user_phone_number}
+                tr
+                    td 订单状态
+                    td #{statusName[order.status]}
+                    td 客服代表:
+                    td #{order.service_name}
+                - if( order.status > 0 )
+                    tr
+                        td 评价
+                        td(colspan="3") #{commentName[order.comment]}
+                    tr
+                        td 评价详情
+                        td(colspan="3") #{order.comment_desc}

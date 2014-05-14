@@ -1,0 +1,17 @@
+{
+    "development": {
+        "host" : "testcarnival.mysql.rds.aliyuncs.com",
+        "port" : "3306",
+        "database" : "parentsheart",
+        "user" : "xnal_admin",
+        "password" : "xnal078_admin"
+    },
+
+    "production": {
+        "host" : "testcarnival.mysql.rds.aliyuncs.com",
+        "port" : "3306",
+        "database" : "parentsheart",
+        "user" : "xnal_admin",
+        "password" : "xnal078_admin"
+    }
+}

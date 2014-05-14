@@ -1,0 +1,24 @@
+{
+    "connector.entryHandler.entry":{
+        "required string uid": 1,
+        "optional string device_token":2,
+        "required string client_type":3,
+        "required string user_type":4,
+        "required string version":5
+    },
+    "chat.chatHandler.Balance":{
+        "required string uid": 1
+    },
+    "chat.chatHandler.DoctorList":{
+        "required string uid": 1,
+        "optional uInt32 priceid": 2,
+        "optional uInt32 subjectid": 3,
+        "optional uInt32 hospitalid": 4,
+        "optional uInt32 illnessid": 5,
+        "optional uInt32 version": 6
+
+    },
+    "chat.chatHandler.Order":{
+        "required string uid": 1
+    }
+}

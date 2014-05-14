@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>
+        Pomelo
+    </title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="content-style-type" content="text/css" />
+    <meta http-equiv="content-scripte-type" content="text/javascript" />
+    <meta name="author" content="netease" />
+    <meta name="version" content="1.0" />
+    <meta name="keywords" content="pomelo" />
+    <link type="text/css" rel="stylesheet" href="css/base.css" />
+    <script type="text/javascript" src="resources/scripts/jquery-1.3.2.min.js"></script>
+    <script src="js/lib/socket.io.js">
+    </script>
+    <script src="js/lib/pomeloclient.js">
+    </script>
+    <script type="text/javascript">
+        var pomelo = window.pomelo;
+        var host = "42.121.106.17";//"127.0.0.1";//
+        var port = "3010";
+
+        function log(data){
+            var oTest = document.getElementById("info");
+            var newNode = document.createElement("p");
+            newNode.innerHTML = data;
+            oTest.appendChild(newNode);
+        }
+        function set(key, value){
+            var oTest = document.getElementById("info");
+            var newNode = document.createElement("p");
+            newNode.id = key;
+            newNode.innerHTML = value;
+            oTest.appendChild(newNode);
+        }
+        function get(key)
+        {
+            var oTest = document.getElementById(key);
+            return oTest.innerHTML;
+        }
+        function clearInfo(){
+            var oTest = document.getElementById("info");
+            oTest.innerHTML = "info:<br/>";
+        }
+        function registerUser()
+        {
+            pomelo.init({
+                host: host,
+                port: port,
+                log: true
+            }, function() {
+                var args = {
+                    phone_number:"18684959011",
+                    device_token:'abcdbaeweqeqfaskjqwioejqwfqweqwfqweqwe',
+                    password:'111111',
+                    user_type:'user',
+                    mac_address:"23487348975897398",
+                    name:"小小"
+                }
+                pomelo.request("connector.entryHandler.Register", args, function(data) {
+
+                    log(JSON.stringify(data));
+
+                });
+            });
+        }
+        function loginUser() {
+            pomelo.init({
+                host: host,
+                port: port,
+                log: true
+            }, function() {
+                var args = {
+                    uid:"13716155997",
+                    device_token:'abcdbaeweqeqfaskjqwioejqwfqweqwfqweqwe',
+                    mac_address:'23487348975897398',
+                    user_type:'user',
+                    version:"1.0.0",
+                    client_type:"web",
+                    password:"000000"
+                }
+                pomelo.request("connector.entryHandler.Entry", args, function(data) {
+
+                    log(JSON.stringify(data));
+
+                });
+            });
+        }
+
+        function Comment()
+        {
+            var args = {
+                order_id:'2014030712210547',
+                order_type:1,
+                comment:1,
+                comment_desc:''
+            }
+            pomelo.request("chat.chatHandler.Comment", args, function(data) {
+
+                log(JSON.stringify(data));
+                log('login ok!');
+            });
+        }
+
+        function bindPhone(){
+            var args = {
+                phone_number:18689411111
+            }
+            pomelo.request("chat.chatHandler.BindMobile", args, function(data) {
+
+                log(JSON.stringify(data));
+                log('login ok!');
+            });
+        }
+        function OrderFindDoctorGenerate(){
+            var args = {
+                phone_number: 13716155997,
+                category:0,
+                subject:13,
+                illness:1,
+                price:1,
+                illness_desc:"AAAAAAAAAAAAAAAAAAA",
+                patient_name:"asddsad"
+            }
+            pomelo.request("chat.chatHandler.OrderFindDoctorGenerate", args, function(data) {
+
+                log(JSON.stringify(data));
+            });
+        }
+        function pay()
+        {
+            var args = {
+                order_id:'2014031216363872'
+            }
+            pomelo.request("chat.chatHandler.PayOrder", args, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+        function DoctorList() {
+            var args = {
+               category:0,
+               price_id:0,
+               subject_id:0,
+                illness_id:0
+            }
+            pomelo.request("chat.chatHandler.DoctorList", args, function(data) {
+                    log(JSON.stringify(data));
+            });
+        }
+        function DoctorId() {
+            var args = {
+                doctor_id:"8"
+            }
+            pomelo.request("chat.chatHandler.DoctorById", args, function(data) {
+
+                log(JSON.stringify(data));
+            });
+        }
+        function Orders()
+        {
+            var args = {
+                uid:"18689419609"
+            }
+            pomelo.request("chat.chatHandler.Order", args, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+        function Balance() {
+            var args = {
+                uid:"18689419609"
+            }
+            pomelo.request("chat.chatHandler.Balance", args, function(data) {
+
+                log(JSON.stringify(data));
+            });
+        }
+        function loginDoctor() {
+            pomelo.init({
+                host: host,
+                port: port,
+                log: true
+            }, function() {
+                var args = {
+                    uid:"18684959011",
+                    device_token:'18684959011',
+                    user_type:'doctor',
+                    version:"1.0.0",
+                    client_type:"web"
+                }
+                pomelo.request("connector.entryHandler.Entry", args, function(data) {
+                    log(JSON.stringify(data));
+                    log('login ok!');
+                });
+            });
+        }
+        function LogOut()
+        {
+            var args = {
+            }
+            pomelo.request("connector.entryHandler.LogOut", args, function(data) {
+                log(JSON.stringify(data));
+                log('logout!');
+            });
+        }
+        function reloginDoctor()
+        {
+            var args = {
+                uid:"18684959011",
+                device_token:'18684959011',
+                user_type:'doctor',
+                version:"1.0.0",
+                client_type:"web"
+            }
+            pomelo.request("connector.entryHandler.Entry", args, function(data) {
+                log(JSON.stringify(data));
+                log('login ok!');
+            });
+        }
+        var order_id = "";
+        pomelo.on('onOrderGeneratePush',function (data){
+            log('onOrderGeneratePush ' + JSON.stringify(data));
+            order_id = data.order_id;
+            set('order_id',data.order_id);
+        })
+        pomelo.on('onFindDoctor',function (data){
+
+            log('onFindDoctor :' + JSON.stringify(data));
+
+        })
+        pomelo.on('onLogout',function (data){
+
+            log('onLogout :' + JSON.stringify(data));
+
+        })
+        pomelo.on('onOrderCancelPush',function (data){
+
+            log('onOrderCancelPush :' + JSON.stringify(data));
+
+        })
+        pomelo.on('onMsg',function (data){
+
+            log('onMsg :' + JSON.stringify(data));
+
+        })
+        pomelo.on('onOrderFinished',function (data){
+
+            log('onOrderFinished :' + JSON.stringify(data));
+
+        })
+
+        function OrderConfirmation()
+        {
+            var orderid = order_id;
+            if(orderid==undefined || orderid == '')
+            {
+                orderid = get('order_id');
+            }
+            alert(orderid);
+            var args = {
+                order_id:orderid
+            }
+            pomelo.request("chat.chatHandler.OrderConfirmation",  args, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+        function orderClose( )
+        {
+            var orderid = order_id;
+            if(orderid==undefined || orderid == '')
+            {
+                orderid = get('order_id');
+            }
+            alert(orderid);
+            var args = {
+                order_id:orderid
+            }
+            pomelo.request("chat.chatHandler.CloseOrder",  args, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+        function OnLine()
+        {
+            pomelo.request("chat.chatHandler.OnLine",  {}, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+        function OffLine()
+        {
+            pomelo.request("chat.chatHandler.OffLine",  {}, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+        function handup()
+        {
+            pomelo.init({
+                host: host,
+                port: port,
+                log: true
+            }, function() {
+                var order_id = $("#orderId").val();
+                alert( "order_id:" + order_id)
+                var args = {
+                    order_id:order_id
+                }
+                pomelo.request("chat.chatHandler.Handup",  args, function(data) {
+                    log(JSON.stringify(data));
+                });
+            });
+        }
+        function TelephoneRecord()
+        {
+            var args = {
+                count:2,
+                orderby:"desc",
+                begintime:new Date()
+            }
+            pomelo.request("chat.chatHandler.TelephoneRecord",  args, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+
+        function GetInitInfo()
+        {
+            var args = {
+
+            }
+            pomelo.request("chat.chatHandler.GetInitInfo",  args, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+        function GetCitys()
+        {
+            var args = {
+
+            }
+            pomelo.request("chat.chatHandler.GetCitys",  args, function(data) {
+                log(JSON.stringify(data));
+            });
+        }
+
+
+    </script>
+
+</head>
+<body>
+<div class="g-doc">
+    <div class="g-button">
+        <input id="test1" type="button" value="loginUser" onclick="loginUser()"/>
+        <input id="test0" type="button" value="DoctorList" onclick="DoctorList()"/>
+        <input id="test2" type="button" value="DoctorId" onclick="DoctorId()"/>
+        <input id="test3" type="button" value="Balance" onclick="Balance()"/>
+        <input id="pay" type="button" value="pay" onclick="pay()"/>
+
+        <br />
+        <input id="test5" type="button" value="OrderFindDoctorGenerate" onclick="OrderFindDoctorGenerate()"/>
+        <input id="test7" type="button" value="Orders" onclick="Orders()"/>
+        <input id="bindPhone" type="button" value="bindPhone" onclick="bindPhone()"/>
+        <input id="registerUser" type="button" value="registerUser" onclick="registerUser()"/>
+
+        <br />
+        <input id="test4" type="button" value="loginDoctor" onclick="loginDoctor()"/>
+        <input id="reloginDoctor" type="button" value="reloginDoctor" onclick="reloginDoctor()"/>
+
+        <input id="OrderConfirmation" type="button" value="OrderConfirmation" onclick="OrderConfirmation()"/>
+        <input id="orderClose" type="button" value="orderClose" onclick="orderClose()"/>
+
+        <input id="TelephoneRecord" type="button" value="TelephoneRecord" onclick="TelephoneRecord()"/>
+        <input id="online" type="button" value="online" onclick="OnLine()"/>
+        <input id="offline" type="button" value="OffLine" onclick="OffLine()"/>
+
+        <br />
+        <input id="clear" type="button" value="clear" onclick="clearInfo()"/>
+        <input id="GetInitInfo" type="button" value="GetInitInfo" onclick="GetInitInfo()"/>
+        <input id="GetCitys" type="button" value="GetCitys" onclick="GetCitys()"/>
+        <input id="LogOut" type="button" value="LogOut" onclick="LogOut()"/>
+        <input id="Comment" type="button" value="Comment" onclick="Comment()"/>
+
+        <br />
+        <input id="orderId" type="text" value="12w12" />
+        <input id="handup" type="button" value="handup" onclick="handup()"/>
+    </div>
+    <div id='info'>
+        info:
+
+    </div>
+</div>
+</body>
+</html>

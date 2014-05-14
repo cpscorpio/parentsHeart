@@ -1,0 +1,100 @@
+//
+   Created by chenpeng on 14-3-17.
+
+extends default
+
+block title
+    h3 找医生订单信息
+block content
+    - statusName = ['','未支付','未受理(已支付)','已受理','咨询结束(未评价)','完成(已评价)','状态异常'];
+    - commentName = ['未评价','差评','中评','差评'];
+    form
+        fieldset
+            table(style="width:80%;margin:auto")
+                tr
+                    td 订单ID
+                    td #{order.order_id}
+                    td 创建时间
+                    td #{order.ctime}
+                tr
+                    td 用户号码
+                    td(colspan="3") #{order.user_contact}
+                - if(order.status > 2)
+                    tr
+                        td 订单状态
+                        td #{statusName[order.status]}
+                        td 受理医生:
+                        td
+                            a(href="#",title="#{order.doctor_name}") #{order.doctor_name}
+                    tr
+                        td(colspan="2")
+                        td 联系电话
+                        td #{order.contact}
+                    tr
+                        td 到期时间
+                        td #{order.exptime}
+                        td 剩余时间
+                        td #{order.avatime}分钟
+                - else
+                    tr
+                        td 订单状态
+                        td(colspan="3") #{statusName[order.status]}
+                tr
+                    td(style="width:12%") 科室
+                    td(style="width:38%") #{order.department}
+                    td(style="width:12%") 疾病
+                    td(style="width:38%") #{order.disease}
+                tr
+                    td 病情描述
+                    td(colspan="3") #{order.disease_desc}
+                tr
+                    td 价格
+                    td(colspan="3") ￥#{order.price}
+                - if( order.status == 5 )
+                    tr
+                        td 评价
+                        td(colspan="3") #{commentName[order.comment]}
+                    tr
+                        td 评价详情
+                        td(colspan="3") #{order.comment_desc}
+                - if(order.status > 2 && ( !records || records.length == 0))
+                    tr
+                        td(colspan="4") 没有通话记录
+            - if (order.status > 2 && records && records.length > 0)
+                table
+                    thead
+                        tr
+                            th(colspan="10")
+                                i 通话记录
+                        tr
+                            th 呼入号码
+                            th 呼入时间
+                            th 接听号码
+                            th 接听时间
+                            th 结束时间
+                            th 通话时长
+                            th 挂断号码
+                            th 到期时间
+                            th 剩余时长
+                            th 录音
+                    tbody
+                        - for ( var i = 0; i < records.length; i ++)
+                            tr
+                                td #{records[i].fromphone}
+                                td #{records[i].calltime}
+                                td #{records[i].torealphone}
+                                td #{records[i].receivetime}
+                                td #{records[i].endtime}
+                                td #{records[i].talktime} 秒
+                                td #{records[i].hung}
+                                td #{records[i].exptime}
+                                td #{records[i].avatime} 分钟
+                                td
+                                    - if(records[i].recordfile)
+                                        a(href="getRecordFile#{records[i].recordfile}") 播放
+                                    - else
+                                        b 无
+
+
+
+

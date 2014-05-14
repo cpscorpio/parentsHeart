@@ -1,0 +1,34 @@
+//
+   Created by chenpeng on 14-2-27.
+extends default
+block scripts
+    script(src="js/hy_typeManage.js")
+    - for ( var i = 0; i < types.length;i++)
+        - if( types[i])
+            script typeData.push({id:#{types[i].id},name:'#{types[i].name}'});
+block title
+    h3 号源类别管理
+block thead
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 名称
+        th 其他
+block tfoot-th
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 名称
+        th 其他
+block tfoot
+    tr
+        th 添加
+            th Auto
+        th
+            input(class="text-input small-input", type="text",name="typeName",id="typeName")
+        th
+            a(href="#",id="btnAdd",class="button") 添加
+block tbody
+    tbody(id="typeList")

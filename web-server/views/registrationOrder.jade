@@ -1,0 +1,72 @@
+//
+   Created by chenpeng on 14-3-17.
+extends default
+
+block title
+    h3 挂号订单信息
+block content
+    - statusName = ['未处理','已拒绝','已受理','未评价','完成(已评价)','状态异常'];
+    - typeName = ['普通号','专家号','特序号']
+    - commentName = ['未评价','差评','中评','差评'];
+    - sexName = ['男','女'];
+    form
+        fieldset
+            table(style="width:80%;margin:auto")
+                tr
+                    td 订单ID
+                    td #{order.order_id}
+                    td 创建时间
+                    td #{order.ctime}
+                tr
+                    td 用户号码
+                    td(colspan="3") #{order.user_contact}
+                tr
+                    td(style="width:12%") 医院
+                    td(style="width:38%") #{order.hospital}
+                    td(style="width:12%") 科室
+                    td(style="width:38%") #{order.category}-#{order.department}
+                tr
+                    td(style="width:12%") 号源种类
+                    td(style="width:38%") #{typeName[order.type]}
+                    td(style="width:12%") 需号时间
+                    td(style="width:38%") #{order.need_time}
+                tr
+                    td(colspan="4") 患者信息
+                tr
+                    td 姓名
+                    td #{order.name}
+                    td 性别
+                    td #{sexName[order.sex]}
+                tr
+                    td 生日
+                    td #{order.birthday}
+                    td 身份证号
+                    td #{order.id_card}
+                tr
+                    td 是否需要病历本
+                    td #{order.need_medical_record ? '是':'否'}
+                    td 是否有医保
+                    td #{order.have_health_insurance ? '是':'否'}
+                - if(order.status > 1)
+                    tr
+                        td 订单状态
+                        td #{statusName[order.status]}
+                        td 受理人:
+                        td #{order.worker_name}
+                    tr
+                        td(colspan="2")
+                        td 联系电话
+                        td #{order.worker_contact}
+                - else
+                    tr
+                        td 订单状态
+                        td(colspan="3") #{statusName[order.status]}
+
+                - if( order.status == 5 )
+                    tr
+                        td 评价
+                        td(colspan="3") #{commentName[order.comment]}
+                    tr
+                        td 评价详情
+                        td(colspan="3") #{order.comment_desc}
+

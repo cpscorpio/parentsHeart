@@ -1,0 +1,42 @@
+//
+   Created by chenpeng on 14-2-26.
+
+extends default
+block scripts
+    script(src="js/hy_hospitalManage.js")
+    - for ( var i = 0; i < hospitals.length;i++)
+        - if( hospitals[i])
+            script hospitalData.push({id:#{hospitals[i].id},name:'#{hospitals[i].name}',city:#{hospitals[i].city}});
+    - for ( var i = 0; i < citys.length;i++)
+        - if( citys[i])
+            script cityData.push({id:#{citys[i].id},name:'#{citys[i].name}'});
+block title
+    h3 医院管理
+block thead
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 名称
+        th 城市
+        th 其他
+block tfoot-th
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 名称
+        th 城市
+        th 其他
+block tfoot
+    tr
+        th 添加
+            th Auto
+        th
+            input(class="text-input small-input", type="text",name="hospitalName",id="hospitalName")
+        th
+            select(name="sel_city",id="sel_city")
+        th
+            a(href="#",id="btnAdd",class="button") 添加
+block tbody
+    tbody(id="hospitalList")

@@ -1,0 +1,38 @@
+//
+   Created by chenpeng on 14-2-25.
+extends default
+block scripts 
+    script(src="js/subjectManage.js")
+    - for ( var i = 0; i < subjects.length;i++)
+        - if( subjects[i])
+            script subjectData.push({id:#{subjects[i].id},name:'#{subjects[i].name}',category:#{subjects[i].category}});
+block title
+    h3 科室管理
+block thead
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 类型
+        th 科室名称
+        th 其他
+block tfoot-th
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 类型
+        th 科室名称
+        th 其他
+block tfoot
+    tr
+        th 添加
+            th Auto
+        th
+            input(class="text-input small-input", type="text",name="subjectName",id="subjectName")
+        th
+            select(name="sel_category",id="sel_category")
+        th
+            a(href="#",id="btnAdd",class="button") 添加
+block tbody
+    tbody(id="subjectList")

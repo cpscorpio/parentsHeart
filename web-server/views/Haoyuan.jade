@@ -1,0 +1,100 @@
+//
+   Created by chenpeng on 14-2-27.
+
+extends default
+block scripts
+    script(src="js/hy_Manage.js")
+    - for ( var i = 0; i < hospitals.length;i++)
+        - if( hospitals[i])
+            script hospitalData.push({id:#{hospitals[i].id},name:'#{hospitals[i].name}',city:#{hospitals[i].city}});
+    - for ( var i = 0; i < citys.length;i++)
+        - if( citys[i])
+            script cityData.push({id:#{citys[i].id},name:'#{citys[i].name}'});
+    - for ( var i = 0; i < subjects.length;i++)
+        - if( subjects[i])
+            script subjectData.push({id:#{subjects[i].id},name:'#{subjects[i].name}'});
+    - for ( var i = 0; i < types.length;i++)
+        - if( types[i])
+            script typeData.push({id:#{types[i].id},name:'#{types[i].name}'});
+    - for ( var i = 0; i < numbers.length;i++)
+        - if( numbers[i])
+            script.
+                haoyuanData.push({
+                    id:#{numbers[i].id},
+                    hospital:#{numbers[i].hospital},
+                    subject:#{numbers[i].subject},
+                    type:#{numbers[i].type},
+                    date:#{numbers[i].date},
+                    doctor:'#{numbers[i].doctor}',
+                    number:#{numbers[i].number}
+                });
+block title
+    h3 号源管理
+block thead
+    tr
+        th(colspan="10")
+            .pagination.align-left
+                - var dayNames = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
+                - var now = new Date();
+                -for (var i = 0; i < 7; i++)
+                    - var now_milliseconds = now.getTime() + 1000*60*60*24*i;
+                    - thisDate = new Date();
+                    - thisDate.setTime(now_milliseconds);
+                    - var str = (thisDate.getMonth() + 1) + '月' + thisDate.getDate() + '日 ' + dayNames[thisDate.getDay()];
+                    - if(now.getDay() == thisDate.getDay())
+                        a(id='#{thisDate.getDay()}',href="#",class="number current",onclick="searchDate(#{thisDate.getTime()})") #{str}
+                    - else
+                        a(id='#{thisDate.getDay()}',href="#",class="number",onclick="searchDate(#{thisDate.getTime()})") #{str}
+    tr
+        th(colspan="10")
+            .bulk-actions.align-left
+                b 城市：
+                select(name="search_city",class="simple-select",id="search_city",onchange="changeCity()")
+                b &nbsp;&nbsp;&nbsp;&nbsp;医院：
+                select(name="search_hospital",class="normal-select",id="search_hospital",onchange="changeHospital()")
+                b &nbsp;&nbsp;&nbsp;&nbsp;
+                input(class="text-input small-input", type="text",name="search",id="search")
+                a(id="searchBtn",href="#",title="查找",class="button") 查找
+    tr
+        th
+            input(class="check-all",id="check_all",name="check_all",type="checkbox")
+        th 编号
+        th 城市
+        th 医院
+        th 科室
+        th 种类
+        th 坐诊医生
+        th 剩余号源
+        th 其他
+block tfoot-th
+    tr
+        th(class="checkbox")
+            input(class="check-all",id="check_all",name="check_all",type="checkbox")
+        th 编号
+        th 城市
+        th 医院
+        th 科室
+        th 种类
+        th 坐诊医生
+        th 剩余号源
+        th 其他
+block tfoot
+    tr
+        th
+        th Auto
+        th
+            select(name="sel_city",id="sel_city",class="simple-select",onchange="sel_changeCity()")
+        th
+            select(name="sel_hospital",id="sel_hospital",class="normal-select")
+        th
+            select(name="sel_subject",id="sel_subject",class="simple-select")
+        th
+            select(name="sel_type",id="sel_type",class="simple-select")
+        th
+            input(class="text-input simple-input", type="text",name="doctor",id="doctor")
+        th
+            input(class="text-input number-input", type="text",name="number",id="number")
+        th
+            a(href="#",id="btnAdd",class="button") 添加
+block tbody
+    tbody(id="haoyuanList")

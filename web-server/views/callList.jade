@@ -1,0 +1,26 @@
+//
+   Created by chenpeng on 14-3-20.
+
+extends default
+block scripts
+    script(src="js/callManage.js")
+block content-head
+    form
+        p
+            input( class="text-input small-input", type="text", id="phoneNumber",name="phoneNumber")
+            input(class="button",type="button",value="查询",onclick="getList()")
+            <br/>
+            small 请输入要查询的手机号码
+block title
+    h3 电话记录
+block thead
+    tr
+        th 订单编号
+        th 呼入号码
+        th 呼入时间
+        th 接听号码
+        th 通话时长
+        th 挂断号码
+        th 到期时间
+block tbody
+    tbody(id="callList")

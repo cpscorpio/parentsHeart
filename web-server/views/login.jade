@@ -1,0 +1,29 @@
+doctype html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
+html(xmlns='http://www.w3.org/1999/xhtml')
+    head
+        include include/head
+    body#login
+        #loginView
+            #login-wrapper.png_bg
+                #login-top
+                    h1 Simpla Admin
+                    img(id="logo", src="resources/images/logo.png", alt="simpla Admin logo")
+                #login-content
+                    form(action="/",method="POST")
+                        - if ( alertMsg)
+                            div.notification.information.png_bg
+                                #login-info #{alertMsg}
+                        p
+                            label Username
+                            input(id="username",name="username",class="text-input", type="text")
+                        div.clear
+                        p
+                            label Password
+                            input(id="password",name="password",class="text-input", type="password")
+                        div.clear
+                        p#remember-password
+                            input(type="checkbox")
+                            b remember me
+                        div.clear
+                        p
+                            input(class="button", type="submit", value="Sign In")

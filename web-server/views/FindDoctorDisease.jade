@@ -1,0 +1,42 @@
+//
+   Created by chenpeng on 14-2-25.
+
+extends default
+block scripts
+    script(src="js/diseaseManage.js")
+    - for ( var i = 0; i < subjects.length;i++)
+        - if( subjects[i])
+            script subjectData.push({id:#{subjects[i].id},name:'#{subjects[i].name}',category:#{subjects[i].category}});
+    - for ( var i = 0; i < diseases.length;i++)
+        - if( diseases[i])
+            script diseaseData.push({id:#{diseases[i].id},name:'#{diseases[i].name}',department_id:#{diseases[i].department_id}});
+block title
+    h3 疾病管理
+block thead
+    tr
+        th
+            input(class="check-all",id="check_all",name="check_all",type="checkbox")
+        th 编号
+        th 疾病名称
+        th 所属科室
+        th 其他
+block tfoot-th
+    tr
+        th
+            input(class="check-all",id="check_all",name="check_all",type="checkbox")
+        th 编号
+        th 疾病名称
+        th 所属科室
+        th 其他
+block tfoot
+    tr
+        th 添加
+        th Auto
+        th
+            input(class="text-input small-input", type="text",name="subjectName",id="subjectName")
+        th
+            select(name="sel_category",id="sel_category")
+        th
+            a(href="#",id="btnAdd",class="button") 添加
+block tbody
+    tbody(id="subjectList")

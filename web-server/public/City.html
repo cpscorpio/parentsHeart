@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QQ JS省市区三级联动</title>
+    <!-- 直接使用QQ的省市区数据 -->
+    <!--
+    <script type="text/javascript" src="http://ip.qq.com/js/geo.js"></script>
+    -->
+    <script type="text/javascript" src="resources/scripts/geo.js"></script>
+</head>
+<body>
+<form>
+    <select class="select" name="province" onchange="change(1)" id="province">
+        <option></option>
+    </select>
+    <select class="select" name="city" onchange="change(2)" id="city">
+        <option></option>
+    </select>
+    <select class="select" name="town" id="town">
+        <option></option>
+    </select>
+    <input id="address" name="address" type="text" value="" />
+    <input onclick="showValue();" type="submit" value="提交" />
+</form>
+</body>
+</html>

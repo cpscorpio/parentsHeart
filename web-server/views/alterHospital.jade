@@ -1,0 +1,71 @@
+//
+    Created by chenpeng on 14-2-24.
+extends default
+
+block scripts
+    script(src="js/hospitalManage.js")
+    - for ( var i = 0;citys && i < citys.length;i++)
+        - if( citys[i])
+            script cityData.push({id:#{citys[i].id},name:'#{citys[i].name}'});
+    - for ( var i = 0;departments && i < departments.length;i++)
+        - if( departments[i])
+            script subjectData.push({id:#{departments[i].id},name:'#{departments[i].name}',category:#{departments[i].category}});
+block title
+    h3 医院信息修改
+block content
+    form
+        fieldset
+            p
+                p(class="align-right")
+                    input(type="button",class="button",onclick="javascript:history.go(-1)",value="返回")
+                label 医院名称
+                input( class="text-input small-input", type="text", id="hospital",name="hospital",value="#{hospital.name}")
+                <br/>
+                small 填入医院的完整名称
+            p
+                label 所在城市
+                select(name="city",id="city",class="small-input")
+                    option(value="0") 请选择城市...
+                    - for ( var k = 1; k < citys.length; k++)
+                        - if( hospital.city == citys[k].id )
+                            option(value="#{citys[k].id}",selected="true") #{citys[k].name}
+                        - else
+                            option(value="#{citys[k].id}") #{citys[k].name}
+
+            p
+                label 请选择科室
+                .content-box.column-left
+                    .content-box-header
+                        h3 儿科
+                    .content-box-content
+                        .tab-content.default-tab
+                            - for ( var k = 0; k < departments.length; k++)
+                                - if ( departments[k] && departments[k].category == 0)
+                                    - if (departments[k].id !== 1)
+                                        - if(hospital.departments.indexOf('' + departments[k].id) == -1)
+                                            p(class="tab_p")
+                                                input(type="checkbox",name="subject",value="#{departments[k].id}")
+                                                span #{departments[k].name}
+                                        - else
+                                            p(class="tab_p")
+                                                input(type="checkbox",name="subject",checked="checked",value="#{departments[k].id}")
+                                                span #{departments[k].name}
+                .content-box.column-right
+                    .content-box-header
+                        h3 产科
+                    .content-box-content
+                        .tab-content.default-tab
+                            - for ( var k = 0; k < departments.length; k++)
+                                - if ( departments[k] && departments[k].category == 1)
+                                    - if (departments[k].id !== 2)
+                                        - if(hospital.departments.indexOf('' + departments[k].id) == -1)
+                                            p
+                                                input(type="checkbox",name="subject",value="#{departments[k].id}")
+                                                span #{departments[k].name}
+                                        - else
+                                            p
+                                                input(type="checkbox",name="subject",checked="checked",value="#{departments[k].id}")
+                                                span #{departments[k].name}
+                .clear
+            p(class="align-left")
+                input(type="button",class="button",onclick="alter(#{hospital.code})",value="更新")

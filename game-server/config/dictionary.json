@@ -1,0 +1,6 @@
+[
+    "connector.entryHandler.entry",
+    "chat.chatHandler.Balance",
+    "chat.chatHandler.DoctorList",
+    "chat.chatHandler.Order"
+]

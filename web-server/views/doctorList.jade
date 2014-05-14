@@ -1,0 +1,120 @@
+//
+   Created by chenpeng on 14-3-14.
+
+extends default
+block scripts
+    script(src="js/doctorManage.js")
+    link(rel="stylesheet", href="resources/css/uploadify.css", type="text/css", media="screen")
+    script(src="resources/scripts/jquery.uploadify.min.js")
+    - for ( var i = 0; i < prices.length;i++)
+        - if( prices[i])
+            script priceData.push({id:#{prices[i].id},name:'￥#{prices[i].price}'});
+    - for ( var i = 0; i < jobTitles.length;i++)
+        - if( jobTitles[i])
+            script jobTitles.push({id:#{jobTitles[i].id},name:'#{jobTitles[i].name}'});
+    - for ( var i = 0;citys && i < citys.length;i++)
+        - if( citys[i])
+            script cityData.push({id:#{citys[i].id},name:'#{citys[i].name}'});
+    - for ( var i = 0; i < diseases.length;i++)
+        - if( diseases[i])
+            script diseaseData.push({id:#{diseases[i].id},name:'#{diseases[i].name}',department_id:#{diseases[i].department_id}});
+    - for ( var i = 0;departments && i < departments.length;i++)
+        - if( departments[i])
+            script subjectData.push({id:#{departments[i].id},name:'#{departments[i].name}',category:#{departments[i].category}});
+    - for ( var i = 0; hospitals && i <  hospitals.length;i++)
+        - if( hospitals[i])
+            script hospitalData.push({id:#{hospitals[i].code},name:'#{hospitals[i].name}',department_id:"#{hospitals[i].departments}",city:#{hospitals[i].city}});
+    - for ( var i = 0; doctors && i < doctors.length; i++)
+        - if( doctors[i])
+            script doctorData.push({id:#{doctors[i].id},name:'#{doctors[i].name}',job_title:#{doctors[i].job_title},hospital:#{doctors[i].hospital},departments:'#{doctors[i].departments}',price:#{doctors[i].price}});
+block title
+    h3 医生管理
+    ul(class="content-box-tabs")
+        li
+            a(href="#tab1",class="default-tab") 列表
+        li
+            a(href="#tab2") 添加
+    .clear
+block thead
+    tr
+        th
+            input(class="check-all", type="checkbox")
+        th 编号
+        th 姓名
+        th 职位
+        th 医院
+        th 科室
+        th 价格
+        th 其他
+block tbody
+    tbody(id="doctorList")
+block tab2
+    #tab2.tab-content
+        form(id="form")
+            fieldset
+                p(class="align-right")
+                    img(src="Image_doctor.jpg",width="100px",height="160px")
+                    <br/>
+                    input(type="file",accept="image/*", id="uploadFile",name="uploadFile")
+                p
+                    label 姓名
+                    input( class="text-input small-input", type="text", id="doctor_name",name="doctor_name")
+                p
+                    label 工作号码
+                    input( class="text-input small-input", type="text", id="work_phone_number",name="work_phone_number")
+                    <br/>
+                    small 工作号码用于接受咨询
+                p
+                    label 个人号码
+                    input( class="text-input small-input", type="text", id="self_phone_number",name="self_phone_number")
+                    <br/>
+                    small 用于方便联系您
+                p
+                    label 所在医院
+                    select(name="sel_city",id="sel_city",class="normal-select",onchange="changeCity()")
+                    span &nbsp;&nbsp;
+                    select(name="sel_hospital",id="sel_hospital",class="select")
+                p
+                    span 职位&nbsp;&nbsp;
+                    select(name="sel_job",id="sel_job",class="normal-select")
+                    span &nbsp;&nbsp;&nbsp; 咨询价格&nbsp;&nbsp;
+                    select(name="sel_price",id="sel_price",class="normal-select")
+                p
+                    label 请选择科室
+                    .content-box.column-left
+                        .content-box-header
+                            h3 儿科
+                        .content-box-content
+                            .tab-content.default-tab
+                                - for ( var k = 0; k < departments.length; k++)
+                                    - if ( departments[k] && departments[k].category == 0)
+                                        - if (departments[k].id !== 1)
+                                            p(class="tab_p")
+                                                input(type="checkbox",name="subject",value="#{departments[k].id}",onclick="onDepartment(this)")
+                                                span #{departments[k].name}
+                                .clear
+                                input(type="checkbox",class="checked-all")
+                                span 全选&nbsp;&nbsp;&nbsp;&nbsp;
+                                span(class="checked-invert") 反选
+                    .content-box.column-right
+                        .content-box-header
+                            h3 产科
+                        .content-box-content
+                            .tab-content.default-tab
+                                - for ( var k = 0; k < departments.length; k++)
+                                    - if ( departments[k] && departments[k].category == 1)
+                                        - if (departments[k].id !== 2)
+                                            p
+                                                input(type="checkbox",name="subject",value="#{departments[k].id}",onclick="onDepartment(this)")
+                                                span #{departments[k].name}
+                                .clear
+                                input(type="checkbox",class="checked-all")
+                                span 全选&nbsp;&nbsp;&nbsp;&nbsp;
+                                span(class="checked-invert") 反选
+                    .clear
+                p
+                    span 主治疾病&nbsp;&nbsp;
+                    select(name="sel_subject",id="sel_subject",class="select",onchange="changeSubject()")
+                    select(name="sel_illness",id="sel_illness",class="select")
+                p
+                    input(type="button",class="button",onclick="addDoctor()",value="提交")

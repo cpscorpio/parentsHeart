@@ -1,0 +1,14 @@
+//
+    Created by chenpeng on 14-2-19.
+extends default
+block title
+    h3 订单信息
+block content-head
+    form(action="/getClientOrder",method="POST")
+        p
+            input( class="text-input small-input", type="text", id="phoneNumber",name="phoneNumber")
+            input(class="button",type="submit",value="提交")
+            <br/>
+            small 请输入用户手机号码
+block content
+    h3 请先输入用户手机号码
